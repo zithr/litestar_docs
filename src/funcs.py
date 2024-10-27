@@ -144,9 +144,7 @@ class DocWriter:
 def create_unique_folder() -> Path:
     id = uuid.uuid4().hex
     curr_folders = {folder.name for folder in OUT_PATH.iterdir() if folder.is_dir()}
-    while True:
-        if id not in curr_folders:
-            break
+    while id in curr_folders:
         id = uuid.uuid4().hex
     out_folder = OUT_PATH / id
     out_folder.mkdir()

@@ -88,32 +88,11 @@ async def handle_file_upload(
 
 
 @get(path="/down")
-async def handle_file_download(id: str | None) -> File:
+async def handle_file_download(id: str) -> File:
     """
     Download zip file with given id
     background_task deletes zip + directory
     """
-    # TODO: id = None for testing only, remove later
-    if not id:
-        df = pd.read_excel("test_data/ABC_Ltd.xlsx")
-
-        # create unique folder
-        id = uuid.uuid4().hex
-        curr_folders = {folder.name for folder in OUT_PATH.iterdir() if folder.is_dir()}
-        while id in curr_folders:
-            id = uuid.uuid4().hex
-        out_folder = OUT_PATH / id
-        out_folder.mkdir()
-
-        DocWriter(df, out_folder).generate_docs()
-
-        # make zip file: filename (can include path), file type, folder to zip
-        shutil.make_archive(f"{OUT_PATH / id}", "zip", out_folder)
-
-        file_path = OUT_PATH / f"{id}.zip"
-        return File(
-            path=file_path, filename="out.zip", background=BackgroundTask(cleanup, id)
-        )
 
     file_path = OUT_PATH / f"{id}.zip"
     logger.info(file_path)
