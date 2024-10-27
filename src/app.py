@@ -80,15 +80,16 @@ async def handle_file_upload(
         cleanup(id)
         return
 
+    clean_filename = ''.join(c for c in data.filename.split('.')[0] if c.isalnum())
     # make zip file, store in level above the out_folder to avoid zip trying to zip itself
     # filename (can include path), file type, folder to zip
     shutil.make_archive(f"{OUT_PATH / id}", "zip", out_folder)
 
-    return ClientRedirect(f"/down?id={id}")
+    return ClientRedirect(f"/down?id={id}&name={clean_filename}")
 
 
 @get(path="/down")
-async def handle_file_download(id: str) -> File:
+async def handle_file_download(id: str, name:str) -> File:
     """
     Download zip file with given id
     background_task deletes zip + directory
@@ -97,7 +98,7 @@ async def handle_file_download(id: str) -> File:
     file_path = OUT_PATH / f"{id}.zip"
     logger.info(file_path)
     return File(
-        path=file_path, filename="out.zip", background=BackgroundTask(cleanup, id)
+        path=file_path, filename=f"{name}.zip", background=BackgroundTask(cleanup, id)
     )
 
 

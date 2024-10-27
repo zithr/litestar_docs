@@ -2,6 +2,7 @@ src/doc_templates/*
 !Example.docx
 src/test_data/
 src/unused.py
+src/out/*
 
 
 # Byte-compiled / optimized / DLL files
