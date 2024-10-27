@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restoration Writer</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5"
+        integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <link rel="icon" type="image/png" href="/static/favicon-48x48.png" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+</head>
+
+<body>
+    <div class="h-screen w-screen flex items-center justify-center bg-gray-200">
+        <form onclick="document.getElementById('response-div').innerHTML = ''" id="form"
+            hx-encoding="multipart/form-data" hx-post="/up" hx-target="#response-div" hx-swap="textContent" hx-indicator="#loading"
+            class="flex flex-col p-16 items-center justify-center border-2 border-black rounded-xl bg-blue-200">
+            <h1 class="text-3xl">Restoration Writer</h1>
+            <img class="py-4 w-24 h-24" src="/static/upload.svg" alt="Upload a document">
+            <div>
+                <p>Upload a document to start.</p>
+            </div>
+            <input class="my-2" type="file" name="file">
+            <button class="my-2 p-2 shadow-xl text-white bg-blue-800 border-2 rounded-lg hover:bg-black">Submit</button>
+            <div class="text-xl text-red-500 font-bold" id="response-div"></div>
+            <span id="loading" class="htmx-indicator">
+                <img src="/static/loading.svg" alt="loading.svg" class="m-auto h-10 animate-spin">
+            </span>
+        </form>
+    </div>
+</body>

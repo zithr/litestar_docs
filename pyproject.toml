@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "litestar-docs"
+version = "0.1.0"
+description = "Web server to serve zip file of documents based on uploaded input file"
+authors = ["Zither"]
+license = "\"MIT\""
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+litestar = {extras = ["standard"], version = "^2.12.1"}
+requests = "^2.32.3"
+pandas = "^2.2.3"
+openpyxl = "^3.1.5"
+loguru = "^0.7.2"
+python-docx = "^1.1.2"
+python-docx-replace = "^0.4.4"
+pydantic = "^2.9.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
