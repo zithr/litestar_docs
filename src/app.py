@@ -81,7 +81,8 @@ async def handle_file_upload(
         return
 
     # pass clean filename through parameter, so downloaded file has proper name
-    clean_filename = ''.join(c for c in data.filename.split('.')[0] if c.isalnum())
+    clean_filename = "".join(c for c in data.filename.split(".")[0] if c.isalnum())
+    clean_filename = clean_filename or "documents"
 
     # make zip file, store in level above the out_folder to avoid zip trying to zip itself
     # filename (can include path), file type, folder to zip
