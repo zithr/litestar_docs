@@ -15,6 +15,8 @@ OUT_PATH = Path(__file__).parent / "out"
 TEMPLATE_PATH.mkdir(exist_ok=True)
 OUT_PATH.mkdir(exist_ok=True)
 
+# the attribute names are used to make replacements in .docx files using docx_replace
+# docx files contain e.g. ${ref} or ${claim_number} (syntax required by docx_replace)
 @dataclass
 class CompanyInfo:
     ref: str
@@ -132,7 +134,7 @@ class DocWriter:
         for f in TEMPLATE_PATH.iterdir():
             if f.name.endswith(".docx"):
                 doc = Document(TEMPLATE_PATH / f.name)
-                # make replacements
+                # make replacements, function takes in document, and the "replacement dictionary"
                 docx_replace(doc, **self.client_info.__dict__)
                 # save doc in target folder
                 doc.save(self.dir / f.name)
