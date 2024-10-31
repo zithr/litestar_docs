@@ -1,0 +1,23 @@
+networks:
+  {{ secrets.TRAEFIK }}:
+    external: true
+
+services:
+  litestar_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # Add any necessary environment variables here
+      EXAMPLE_ENV: "value"
+    networks:
+      - {{ secrets.TRAEFIK }}
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.rule=Host(`{{ secrets.LITESTAR.SUBDOMAIN }}.{{ secrets.MY_DOMAIN }}`)
+      - traefik.http.services.{{ secrets.LITESTAR.USERNAME }}.loadbalancer.server.port={{ secrets.LITESTAR.APPLICATION_PORT }}
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.tls=true
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.tls.certresolver=production
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.middlewares=authelia@docker
+

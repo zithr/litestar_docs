@@ -1,0 +1,35 @@
+#ansible-playbook litestar_setup.yml -i ../hosts -i /home/ramon/secrets/ansible_secrets/.ansible_secrets
+
+- hosts: my_servers
+  vars:
+    SOURCE_USERNAME: "{{ secrets.SOURCE_USERNAME }}"
+    HOST_USERNAME: "{{ secrets.HOST_USERNAME }}"
+  tasks:
+    - name: Copy entire directory to VPS
+      synchronize:
+        mode: push
+        src: /home/{{ SOURCE_USERNAME }}/Code/litestar_docs/
+        dest: /home/{{ HOST_USERNAME }}/litestar_docs/
+        rsync_opts:
+          - "--exclude=src/unused.py"
+          - "--exclude=src/test_data"
+          - "--exclude=src/doc_templates/Example.docx"
+          - "--exclude=docker-compose.yml" # Excluding docker-compose as it needs to be templated out, by next task, to fill the secrets
+        delete: yes
+
+    - name: Copy docker-compose.yml file
+      template:
+        src: /home/{{ SOURCE_USERNAME }}/Code/litestar_docs/docker-compose.yml
+        dest: /home/{{ HOST_USERNAME }}/litestar_docs/docker-compose.yml
+
+    - name: Run Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: /home/{{ HOST_USERNAME }}/litestar_docs/
+        build: always
+        # Reload config files
+        state: restarted
+
+    # - name: Run Docker Compose
+    #   command: docker compose up -d
+    #   args:
+    #     chdir: /home/{{ HST_USERNAME }}/litestar_docs/

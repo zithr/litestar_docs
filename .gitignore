@@ -4,6 +4,8 @@ src/test_data/
 src/unused.py
 src/out/*
 
+ansible/burnyhost
+instructions.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
