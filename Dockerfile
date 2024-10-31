@@ -6,7 +6,7 @@ WORKDIR /root/litestar_server
 
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry install --no-cache --without dev
+RUN poetry install --no-cache
 
 COPY . .
 
