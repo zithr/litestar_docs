@@ -1,5 +1,7 @@
 #ansible-playbook litestar_setup.yml -i ../hosts -i /home/ramon/secrets/ansible_secrets/.ansible_secrets
 
+# Note: modify the "src" locations to match correct source directories. 
+
 - hosts: my_servers
   vars:
     SOURCE_USERNAME: "{{ secrets.SOURCE_USERNAME }}"
