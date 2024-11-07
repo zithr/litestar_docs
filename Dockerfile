@@ -8,6 +8,9 @@ COPY poetry.lock pyproject.toml ./
 
 RUN poetry install --no-cache
 
-COPY . .
+COPY src src
 
+ENV PYTHONPATH=$PYTHONPATH:/root/litestar_server/src
+
+# Can add "--reload" if developing in docker container.
 CMD ["poetry", "run", "litestar", "--app-dir", "src", "run", "--host", "0.0.0.0", "--port", "8000"]

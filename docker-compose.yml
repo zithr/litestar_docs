@@ -3,8 +3,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    pull_policy: build # --buildbr0
     environment:
       # Add any necessary environment variables here
       EXAMPLE_ENV: "value"
     ports:
-      - "8000:8000"
+      - 8000:8000
+    volumes:
+      - ./src:/root/litestar_server/src
+

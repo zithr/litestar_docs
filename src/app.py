@@ -36,6 +36,7 @@ async def cleanup(id: uuid) -> None:
     for f in OUT_PATH.iterdir():
         if f.name == f"{id}.zip":
             f.unlink()
+            break
 
     # Remove folder contents
     dir_target: Path = OUT_PATH / id
