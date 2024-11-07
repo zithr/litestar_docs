@@ -11,7 +11,7 @@ Litestar server providing endpoint to upload a file, returning a zip file contai
 
 ## Run server
 
-`poetry run python src/app.py`
+`poetry run python src/app.py` or `docker compose up`
 
 ## Ansible
 

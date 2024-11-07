@@ -17,11 +17,12 @@
           - "--exclude=src/test_data"
           - "--exclude=src/doc_templates/Example.docx"
           - "--exclude=docker-compose.yml" # Excluding docker-compose as it needs to be templated out, by next task, to fill the secrets
+          - "--exclude=ansible/service_litestar/docker-compose.yml"
         delete: yes
 
     - name: Copy docker-compose.yml file
       template:
-        src: /home/{{ SOURCE_USERNAME }}/Code/litestar_docs/docker-compose.yml
+        src: /home/{{ SOURCE_USERNAME }}/Code/litestar_docs/ansible/service_litestar/docker-compose.yml
         dest: /home/{{ HOST_USERNAME }}/litestar_docs/docker-compose.yml
 
     - name: Run Docker Compose
