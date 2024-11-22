@@ -7,9 +7,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      # Add any necessary environment variables here
-      EXAMPLE_ENV: "value"
     networks:
       - {{ secrets.TRAEFIK }}
     restart: unless-stopped
