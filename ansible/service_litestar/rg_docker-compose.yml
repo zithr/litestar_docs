@@ -1,0 +1,35 @@
+
+services:
+  litestar_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # Add any necessary environment variables here
+      EXAMPLE_ENV: "value"
+    networks:
+      - {{ secrets.TRAEFIK_NETWORK }}
+    # ports:
+    #   - 8000:8000 # handled by traefik
+    restart: unless-stopped
+    labels:
+      # Main HTTPS router
+      - traefik.enable=true
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.rule=Host(`{{ secrets.LITESTAR.SUBDOMAIN }}.{{ secrets.MY_DOMAIN}}`)
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.entrypoints=websecure
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.tls.certresolver=myresolver
+      - traefik.http.services.{{ secrets.LITESTAR.USERNAME }}.loadbalancer.server.port={{ secrets.LITESTAR.APPLICATION_PORT}}
+
+      # HTTP router for redirecting to HTTPS
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}-http.rule=Host(`{{ secrets.LITESTAR.SUBDOMAIN }}.{{ secrets.MY_DOMAIN}}`)
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}-http.entrypoints=web
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}-http.middlewares=redirect-to-https
+
+      # Middleware for redirecting HTTP to HTTPS
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+
+      # - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.middlewares=authelia@docker
+
+networks:
+  {{ secrets.TRAEFIK_NETWORK }}:
+    external: true

@@ -1,0 +1,37 @@
+# ansible-playbook rg_litestar_setup.yml -i ../zhost -i /home/ramon/secrets/ansible_secrets/.ansible_rg
+
+# Note: modify the "src" locations to match correct source directories. 
+
+- hosts: my_servers
+  vars:
+    SOURCE_USERNAME: "{{ secrets.SOURCE_USERNAME }}"
+  tasks:
+    - name: Copy directory to VPS
+      synchronize:
+        mode: push
+        src: /home/{{ SOURCE_USERNAME }}/Code/litestar_docs/
+        dest: /home/litestar_docs/
+        rsync_opts:
+          - "--exclude=src/unused.py"
+          - "--exclude=src/test_data"
+          - "--exclude=src/doc_templates/Example.docx"
+          - "--exclude=docker-compose.yml" # Excluding docker-compose as it needs to be templated out, by next task, to fill the secrets
+          - "--exclude=ansible/service_litestar/docker-compose.yml"
+        delete: yes
+
+    - name: Copy docker-compose.yml file
+      template:
+        src: /home/{{ SOURCE_USERNAME }}/Code/litestar_docs/ansible/service_litestar/rg_docker-compose.yml
+        dest: /home/litestar_docs/docker-compose.yml
+
+    - name: Run Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: /home/litestar_docs/
+        build: always
+        # Reload config files
+        # state: restarted
+
+    # - name: Run Docker Compose
+    #   command: docker compose up -d
+    #   args:
+    #     chdir: /home/ HST_USERNAME /litestar_docs/
