@@ -12,13 +12,13 @@ services:
     labels:
       # Main HTTPS router
       - traefik.enable=true
-      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.rule=Host(`{{ secrets.LITESTAR.SUBDOMAIN }}.{{ secrets.MY_DOMAIN}}`)
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.rule=Host(`{{ secrets.LITESTAR.SUBDOMAIN }}.{{ secrets.MY_DOMAIN }}`)
       - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.entrypoints=websecure
       - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}.tls.certresolver=myresolver
-      - traefik.http.services.{{ secrets.LITESTAR.USERNAME }}.loadbalancer.server.port={{ secrets.LITESTAR.APPLICATION_PORT}}
+      - traefik.http.services.{{ secrets.LITESTAR.USERNAME }}.loadbalancer.server.port={{ secrets.LITESTAR.APPLICATION_PORT }}
 
       # HTTP router for redirecting to HTTPS
-      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}-http.rule=Host(`{{ secrets.LITESTAR.SUBDOMAIN }}.{{ secrets.MY_DOMAIN}}`)
+      - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}-http.rule=Host(`{{ secrets.LITESTAR.SUBDOMAIN }}.{{ secrets.MY_DOMAIN }}`)
       - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}-http.entrypoints=web
       - traefik.http.routers.{{ secrets.LITESTAR.USERNAME }}-http.middlewares=redirect-to-https
 
