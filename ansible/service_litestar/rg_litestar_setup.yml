@@ -1,4 +1,4 @@
-# ansible-playbook rg_litestar_setup.yml -i ../zhost -i /home/ramon/secrets/ansible_secrets/.ansible_rg
+# ansible-playbook ansible/service_litestar/rg_litestar_setup.yml -i ansible/zhost -i /home/ramon/secrets/ansible_secrets/.ansible_rg
 
 # Note: modify the "src" locations to match correct source directories. 
 
