@@ -20,6 +20,7 @@ from litestar.params import Body
 from litestar.response import File, Template
 from litestar.contrib.htmx.response import ClientRedirect
 from litestar.background_tasks import BackgroundTask
+from litestar.config.cors import CORSConfig
 
 from funcs import DocWriter
 
@@ -118,6 +119,13 @@ app = Litestar(
         handle_file_download,
         create_static_files_router(path="/static", directories=["src/assets"]),
     ],
+    # middleware=[
+    #     CORSConfig(
+    #         allow_origins=["https://sub2.domain.abc"],  # whitelist your frontend domain
+    #         allow_methods=["GET", "POST", "PUT", "DELETE"],
+    #         allow_headers=["*"],
+    #     ).middleware
+    # ],
     template_config=TemplateConfig(
         directory=Path("src/templates"),
         engine=JinjaTemplateEngine,
